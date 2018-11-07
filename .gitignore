@@ -3,6 +3,8 @@ backup/
 HidPttEmulator/Release/
 HidPttEmulator/Debug/
 Debug/
-Release/
 *.db
 *.aps
+HidPttEmulator/x64/
+*.pdb
+*.metagen
