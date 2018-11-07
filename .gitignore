@@ -6,6 +6,3 @@ Debug/
 Release/
 *.db
 *.aps
-*.rc
-*.vcxproj
-*.filters
