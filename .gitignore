@@ -1,0 +1,11 @@
+.vs/
+backup/
+HidPttEmulator/Release/
+HidPttEmulator/Debug/
+Debug/
+Release/
+*.db
+*.aps
+*.rc
+*.vcxproj
+*.filters
