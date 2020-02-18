@@ -1,4 +1,4 @@
-# HitPttEmulator
+# HidPttEmulator
 
 Windows Form C++ application that reads GPIO input from USB HID devices and emulates keyboard inputs which can be used for setting up push-to-talk (PTT) in VOIP applications. 
 
