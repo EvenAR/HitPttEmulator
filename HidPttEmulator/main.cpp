@@ -2,7 +2,7 @@
 #include <sstream>
 #include "MyForm.h"
 #include "PttDevice.h"
-#include "UiController.h"
+#include "Controller.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -15,6 +15,6 @@ void main(array<String^>^ args) {
 	Application::SetCompatibleTextRenderingDefault(false);
 
 	HidPttEmulator::MyForm^ form = gcnew HidPttEmulator::MyForm();
-	gcroot<PttDevice^> button = gcnew PttDevice();
-	gcroot<UiController^> uiController = gcnew UiController(button, form);
+	gcroot<PttDevice^> pttDevice = gcnew PttDevice();
+	gcroot<Controller^> uiController = gcnew Controller(pttDevice, form);
 }

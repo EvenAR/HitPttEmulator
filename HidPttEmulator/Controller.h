@@ -1,22 +1,25 @@
 #pragma once
 #include "PttDevice.h"
-#include "MyForm.h"
 
 #include <vcclr.h>
 #include <sstream>
 
 using namespace System::Threading;
 
-ref class UiController
+ref class KeyEmulator;
+ref class HidPttEmulator::MyForm;
+
+ref class Controller
 {
 private:
 	HidPttEmulator::MyForm^ form;
-	PttDevice^ button;
+	PttDevice^ pttDevice;
 	char* iniFilePath;
-	Thread^ t1;
+	Thread^ pttDeviceThread;
+	KeyEmulator^ keyEmulator;
 
 public:
-	UiController(PttDevice^ button, HidPttEmulator::MyForm^ form);
+	Controller(PttDevice^ pttDevice, HidPttEmulator::MyForm^ form);
 	void onFormClosing(System::Object ^sender, System::Windows::Forms::FormClosingEventArgs ^e);
 
 	void onPttPressed();

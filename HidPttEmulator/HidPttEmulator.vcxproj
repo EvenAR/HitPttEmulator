@@ -146,17 +146,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="KeyEmulator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PttDevice.cpp" />
-    <ClCompile Include="UiController.cpp" />
+    <ClCompile Include="Controller.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="KeyEmulator.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="PttDevice.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="UiController.h" />
+    <ClInclude Include="Controller.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">

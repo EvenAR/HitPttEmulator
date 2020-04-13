@@ -1,20 +1,23 @@
-#include "UiController.h"
+#include "Controller.h"
+#include "MyForm.h"
+#include "KeyEmulator.h"
 
 using namespace System::Windows::Forms;
 
 using namespace System::Diagnostics;
 
-UiController::UiController(PttDevice^ button, HidPttEmulator::MyForm^ form)
+Controller::Controller(PttDevice^ pttDevice, HidPttEmulator::MyForm^ form)
 {
 	TCHAR   inBuf[80];
-	this->button = button;
+	this->keyEmulator = gcnew KeyEmulator();
+	this->pttDevice = pttDevice;
 	this->form = form;
 
-	this->form->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &UiController::onFormClosing);
-	this->form->setKeyButton->Click += gcnew System::EventHandler(this, &UiController::setKeyButton_Click);
-	this->form->comboBox2->SelectedIndexChanged += gcnew System::EventHandler(this, &UiController::comboBox2_SelectedIndexChanged);
-	this->form->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &UiController::radioButton1_CheckedChanged);
-	this->form->radioButton2->CheckedChanged += gcnew System::EventHandler(this, &UiController::radioButton2_CheckedChanged);
+	this->form->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Controller::onFormClosing);
+	this->form->setKeyButton->Click += gcnew System::EventHandler(this, &Controller::setKeyButton_Click);
+	this->form->comboBox2->SelectedIndexChanged += gcnew System::EventHandler(this, &Controller::comboBox2_SelectedIndexChanged);
+	this->form->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &Controller::radioButton1_CheckedChanged);
+	this->form->radioButton2->CheckedChanged += gcnew System::EventHandler(this, &Controller::radioButton2_CheckedChanged);
 
 	// Find path of this exe
 	TCHAR *pBuf = new TCHAR[FILENAME_MAX];
@@ -33,12 +36,12 @@ UiController::UiController(PttDevice^ button, HidPttEmulator::MyForm^ form)
 	GetPrivateProfileString(TEXT("DEVICE"), TEXT("gpio_id"), TEXT("0x0"), inBuf, 80, TEXT(iniFilePath));
 	int gpio_id = std::stoul(inBuf, nullptr, 16);
 
-	ButtonParameters bp;
-	bp.controller = this;
-	bp.vid = vid;
-	bp.pid = pid;
-	bp.gpio_id = gpio_id;
-	bp.serial = NULL;
+	DeviceParameters btnParams;
+	btnParams.controller = this;
+	btnParams.vid = vid;
+	btnParams.pid = pid;
+	btnParams.gpio_id = gpio_id;
+	btnParams.serial = NULL;
 
 	bool useCustom = GetPrivateProfileInt(TEXT("USER_SETTINGS"), TEXT("custom"), 1, TEXT(iniFilePath));
 	int keyFromFile = GetPrivateProfileInt(TEXT("USER_SETTINGS"), TEXT("key"), 0, TEXT(iniFilePath));
@@ -56,44 +59,45 @@ UiController::UiController(PttDevice^ button, HidPttEmulator::MyForm^ form)
 		this->form->radioButton2->Checked = true;
 	}
 
-	this->t1 = gcnew Thread(gcnew ParameterizedThreadStart(this->button, &PttDevice::startListening));
-	this->t1->Start(%bp);
+	this->pttDeviceThread = gcnew Thread(gcnew ParameterizedThreadStart(this->pttDevice, &PttDevice::startListening));
+	this->pttDeviceThread->Start(%btnParams);
 
 	Application::Run(this->form);
 };
 
 
-void UiController::onFormClosing(System::Object ^sender, System::Windows::Forms::FormClosingEventArgs ^e)
+void Controller::onFormClosing(System::Object ^sender, System::Windows::Forms::FormClosingEventArgs ^e)
 {
-	this->button->stopListening();
+	this->pttDevice->stopListening();
 };
 
-void UiController::onPttPressed()
+void Controller::onPttPressed()
 {
+	this->keyEmulator->emulatePress();
 	this->form->onPttPressed();
 };
 
-void UiController::onPttReleased()
+void Controller::onPttReleased()
 {
+	this->keyEmulator->emulateRelease();
 	this->form->onPttReleased();
 };
 
-void UiController::onPttDeviceLost() {
+void Controller::onPttDeviceLost() {
 	this->form->onPttDeviceLost();
 };
 
-void UiController::onPttDeviceConnected() {
+void Controller::onPttDeviceConnected() {
 	this->form->onPttDeviceConnected();
 };
 
-void UiController::setEmulationKey(WORD scancode, bool extended) {
+void Controller::setEmulationKey(WORD scancode, bool extended) {
 	LONG lparam = 0x00000001 | (LPARAM)(scancode << 16);
 
 	if (extended == true)
 		lparam = lparam | 0x01000000;       // Extended code if required
 
-	this->button->scancode = scancode;
-	this->button->scancodeExtended = extended;
+	this->keyEmulator->setKey(scancode, extended);
 
 	if (this->form->radioButton1->Checked) {
 		TCHAR *lpszName = new TCHAR[16];

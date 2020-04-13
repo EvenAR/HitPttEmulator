@@ -1,9 +1,11 @@
 #pragma once
-#include <Windows.h>
 #include "MyForm.h"
 #include "hidapi.h"
 
-ref class UiController;
+ref class Controller;
+ref class KeyEmulator;
+
+#define REPORT_NUMBER 0
 
 ref class PttDevice
 {
@@ -11,17 +13,16 @@ public:
 	PttDevice();
 	void startListening(Object^ obj);
 	void stopListening();
-	WORD scancode;
-	bool scancodeExtended;
+
 private:
-	hid_device *handle;
+	hid_device *hidHandle;
 	bool run;
 	
 };
 
-ref struct ButtonParameters
+ref struct DeviceParameters
 {
-	UiController^ controller;
+	Controller^ controller;
 	int vid;
 	int pid;
 	int gpio_id;
