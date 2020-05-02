@@ -217,7 +217,7 @@ namespace HidPttEmulator {
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(28, 13);
 			this->label1->TabIndex = 15;
-			this->label1->Text = L"v1.0";
+			this->label1->Text = L"v2.0";
 			// 
 			// MyForm
 			// 
