@@ -88,6 +88,7 @@ void Controller::onPttReleased()
 };
 
 void Controller::onPttDeviceLost() {
+	this->keyEmulator->emulateRelease();
 	this->form->onPttDeviceLost();
 };
 
@@ -96,6 +97,8 @@ void Controller::onPttDeviceConnected() {
 };
 
 void Controller::setEmulationKey(WORD scancode, bool extended) {
+	this->keyEmulator->emulateRelease();
+
 	LONG lparam = 0x00000001 | (LPARAM)(scancode << 16);
 
 	if (extended == true)
