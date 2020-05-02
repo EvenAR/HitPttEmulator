@@ -25,6 +25,7 @@ ref struct DeviceParameters
 	Controller^ controller;
 	int vid;
 	int pid;
-	int gpio_id;
+	int gpio_pin;
+	bool reverseInput;
 	wchar_t* serial;
 };

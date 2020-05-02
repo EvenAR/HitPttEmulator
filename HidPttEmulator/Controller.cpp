@@ -33,14 +33,18 @@ Controller::Controller(PttDevice^ pttDevice, HidPttEmulator::MyForm^ form)
 	GetPrivateProfileString(TEXT("DEVICE"), TEXT("pid"), TEXT("0x0"), inBuf, 80, TEXT(iniFilePath));
 	int pid = std::stoul(inBuf, nullptr, 16);
 
-	GetPrivateProfileString(TEXT("DEVICE"), TEXT("gpio_id"), TEXT("0x0"), inBuf, 80, TEXT(iniFilePath));
-	int gpio_id = std::stoul(inBuf, nullptr, 16);
+	GetPrivateProfileString(TEXT("DEVICE"), TEXT("gpio_pin"), TEXT("4"), inBuf, 80, TEXT(iniFilePath));
+	int gpio_pin = std::stoul(inBuf, nullptr, 10);
+
+	GetPrivateProfileString(TEXT("DEVICE"), TEXT("reverse_input"), TEXT("0"), inBuf, 80, TEXT(iniFilePath));
+	bool reverseInput = std::stoul(inBuf, nullptr, 10);
 
 	DeviceParameters btnParams;
 	btnParams.controller = this;
 	btnParams.vid = vid;
 	btnParams.pid = pid;
-	btnParams.gpio_id = gpio_id;
+	btnParams.gpio_pin = gpio_pin;
+	btnParams.reverseInput = reverseInput;
 	btnParams.serial = NULL;
 
 	bool useCustom = GetPrivateProfileInt(TEXT("USER_SETTINGS"), TEXT("custom"), 1, TEXT(iniFilePath));
