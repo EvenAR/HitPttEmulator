@@ -16,7 +16,7 @@ The program has only been tested with sound cards that comes with the C-Media CM
 
 ## Running the application
 
-Download HidPttEmulator.zip from [Releases](https://github.com/EvenAR/HidPttEmulator/releases) and unzip all the folders to the same directory on your PC.
+Download HidPttEmulator.zip from [Releases](https://github.com/EvenAR/HidPttEmulator/releases) and unzip all files to the same directory on your PC.
 
 ### Configuration
 
