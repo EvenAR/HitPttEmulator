@@ -14,11 +14,24 @@ A Syba USB sound card with a [C-Media CM119](http://www.repeater-builder.com/voi
 
 The software is only tested with sound cards that comes with the C-Media CM108 and CM119 chip. 
 
-## Binaries
+## Releases
 
-Pre-built binaries can be found in the [Release](/Release/) directory. All files in this folder must be downloaded and put in the same directory. 
+Pre-built binaries can be found under [Releases](/releases/). Simply download HidPttEmulator.zip and run the .exe. 
 
-If your device is not detected by the application, make sure that `vid` (vendor ID) and `pid` (product ID) in the `Settings.ini`-file are set correctly for your device. These values can be found in Windows device manager. The `gpio_id` is used to specify the GPIO input you want to use. By default the file is configured for the Syba USB sound card, with GPIO3 as the input.  
+### Config
+If your device is not detected by the application, make sure that `vid` (vendor ID) and `pid` (product ID) in the `Settings.ini`-file are set correctly for your device. These values can be found in the "Details" tab in Windows device manager, under "Device instance path". The `gpio_id` is used to specify the GPIO input you want to use. By default the file is configured for the Syba USB sound card, with GPIO3 as the input.  
+
+Sample config for CM108 sound card:
+
+```ini
+[DEVICE]
+vid=0x0d8c       ; vendor id
+pid=0x0012       ; product id
+gpio_pin=3       ; The GPIO pin number (pin 13 on CM108 is named GPIO3)
+reverse_input=1  ; Use 1 if the button press closes the circuit, and 0 if it opens the circuit 
+```
+
+![image](https://github.com/EvenAR/HidPttEmulator/assets/5177099/78f623d0-194f-4682-af6e-1550753b882f)
 
 ## Libraries used
 - http://github.com/signal11/hidapi
