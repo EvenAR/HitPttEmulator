@@ -1,6 +1,6 @@
 # HidPttEmulator
 
-Windows Form C++ application that reads GPIO input from USB HID devices and emulates keyboard inputs which can be used for setting up push-to-talk (PTT) in VOIP applications. 
+Windows application that reads GPIO input from USB HID devices and emulates keyboard inputs which can be used for setting up push-to-talk (PTT) in VOIP applications. 
 
 ![GUI](https://i.gyazo.com/afa12e883e2efc1a81df77fec5098902.png)
 
@@ -14,15 +14,16 @@ A Syba USB sound card with a [C-Media CM119](http://www.repeater-builder.com/voi
 
 The software is only tested with sound cards that comes with the C-Media CM108 and CM119 chip. 
 
-## Releases
+## Running the application
 
-Pre-built binaries can be found under [Releases](/releases/). Simply download HidPttEmulator.zip and run the .exe. 
+Download HidPttEmulator.zip from [Releases](https://github.com/EvenAR/HidPttEmulator/releases) and unzip all the folders to the same directory on your PC.
 
-### Config
-If your device is not detected by the application, make sure that `vid` (vendor ID) and `pid` (product ID) in the `Settings.ini`-file are set correctly for your device. These values can be found in the "Details" tab in Windows device manager, under "Device instance path". The `gpio_id` is used to specify the GPIO input you want to use. By default the file is configured for the Syba USB sound card, with GPIO3 as the input.  
+### Configuration
+
+In order for the application to detect your USB sound card the correct `vid` (vendor ID) and `pid` (product ID) in must be configured in `Settings.ini`. These values can be found by locating your sound card in Windows device manager and looking up "Device instance path":
+![image](https://github.com/EvenAR/HidPttEmulator/assets/5177099/78f623d0-194f-4682-af6e-1550753b882f)
 
 Sample config for CM108 sound card:
-
 ```ini
 [DEVICE]
 vid=0x0d8c       ; vendor id
@@ -31,11 +32,9 @@ gpio_pin=3       ; The GPIO pin number (pin 13 on CM108 is named GPIO3)
 reverse_input=1  ; Use 1 if the button press closes the circuit, and 0 if it opens the circuit 
 ```
 
-![image](https://github.com/EvenAR/HidPttEmulator/assets/5177099/78f623d0-194f-4682-af6e-1550753b882f)
-
 ## Libraries used
 - http://github.com/signal11/hidapi
 
-## Related links
+## Thanks to
 - http://www.repeater-builder.com/projects/fob/syba-small-fob.html
 - http://www.marrold.co.uk/2018/04/converting-cm108-usb-fob-for-amateur.html
